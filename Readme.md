@@ -1,6 +1,8 @@
 # ColourSum
 
-Colourise your checksum output
+[![Build Status](https://travis-ci.org/ticky/coloursum.svg?branch=develop)](https://travis-ci.org/ticky/coloursum)
+
+🎨 Colourise your checksum output
 
 ## What is this?
 
