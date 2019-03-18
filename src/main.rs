@@ -75,10 +75,7 @@ fn format_hash(hash: String) -> String {
 
 fn find_bsd_tag_line(line: &str) -> Option<usize> {
     let needle = " = ";
-    match line.rfind(needle) {
-        Some(offset) => Some(offset + needle.len()),
-        None => None,
-    }
+    line.rfind(needle).map(|offset| offset + needle.len())
 }
 
 fn find_sum_prefixed_line(line: &str) -> Option<usize> {
