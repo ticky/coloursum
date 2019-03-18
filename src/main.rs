@@ -56,32 +56,48 @@ impl Display for Line {
     }
 }
 
+/// Formats a base16-format hash or digest.
+///
+/// Each 8-bit hexadecimal digit will be coloured
+/// with the corresponding xterm colour.
 fn format_hash(hash: String) -> String {
     use std::num::ParseIntError;
 
+    // map over every two characters
     let result: Result<String, ParseIntError> = hash
         .chars()
         .chunks(2)
         .into_iter()
         .map(|byte| {
             let ord_string = String::from_iter(byte);
+            // attempt to parse those two characters as a u8,
+            // and if that works, colour them in
             u8::from_str_radix(&ord_string, 16)
                 .map(|ordinal| Fixed(ordinal).paint(ord_string).to_string())
         })
         .collect();
 
+    // if there was an error at any point, return the original value
     result.unwrap_or(hash)
 }
 
+/// Detects the *starting* offset of the
+/// hash in a BSD `md5(1)` style line
 fn find_bsd_tag_line(line: &str) -> Option<usize> {
     let needle = " = ";
     line.rfind(needle).map(|offset| offset + needle.len())
 }
 
+/// Detects the *ending* offset of the hash in a
+/// GNU `md5sum(1)` / perl `shasum(1)` style line
 fn find_sum_prefixed_line(line: &str) -> Option<usize> {
     line.find("  ")
 }
 
+/// Takes each line in `from`, and writes it to `to`.
+///
+/// If a given line is recognisable as the output of a
+/// hashing utility, its hash value will be coloured.
 fn coloursum<F: BufRead, T: Write>(from: F, mut to: T) -> io::Result<()> {
     for wrapped_line in from.lines() {
         writeln!(to, "{}", Line::from(wrapped_line?))?;
