@@ -10,6 +10,14 @@ This is a utility into which you can pipe the output from various checksum gener
 
 It understands both the BSD "tag" form, as well as the GNU Coreutils/Perl `shasum(1)` form of checksums, and has been tested with the output from macOS' `md5`, `shasum`, as well as GNU `md5sum`, `sha256sum`.
 
+## Installation
+
+You'll need [Rust installed and ready to go](https://www.rust-lang.org/tools/install).
+
+```bash
+cargo install coloursum
+```
+
 ## Usage
 
 ```bash
