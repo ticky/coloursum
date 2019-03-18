@@ -65,10 +65,8 @@ fn format_hash(hash: String) -> String {
         .into_iter()
         .map(|byte| {
             let ord_string = String::from_iter(byte);
-            match u8::from_str_radix(&ord_string, 16) {
-                Ok(ordinal) => Ok(Fixed(ordinal).paint(ord_string).to_string()),
-                Err(err) => Err(err),
-            }
+            u8::from_str_radix(&ord_string, 16)
+                .map(|ordinal| Fixed(ordinal).paint(ord_string).to_string())
         })
         .collect();
 
