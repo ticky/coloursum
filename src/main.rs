@@ -57,11 +57,22 @@ impl Display for Line {
 }
 
 fn format_hash(hash: String) -> String {
-    hash.chars().chunks(2).into_iter().map(|byte| {
-        let ord_string = String::from_iter(byte);
-        let ordinal = u8::from_str_radix(&ord_string, 16).unwrap();
-        Fixed(ordinal).paint(ord_string).to_string()
-    }).collect()
+    use std::num::ParseIntError;
+
+    let result: Result<String, ParseIntError> = hash
+        .chars()
+        .chunks(2)
+        .into_iter()
+        .map(|byte| {
+            let ord_string = String::from_iter(byte);
+            match u8::from_str_radix(&ord_string, 16) {
+                Ok(ordinal) => Ok(Fixed(ordinal).paint(ord_string).to_string()),
+                Err(err) => Err(err),
+            }
+        })
+        .collect();
+
+    result.unwrap_or(hash)
 }
 
 fn find_bsd_tag_line(line: &String) -> Option<usize> {
@@ -96,6 +107,26 @@ fn main() -> io::Result<()> {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn format_hash_works() {
+        use super::format_hash;
+
+        assert_eq!(
+            format_hash(
+                "b7527e0e28c09f6f62dd2d4197d5d225".to_string()
+            ),
+            "\u{1b}[38;5;183mb7\u{1b}[0m\u{1b}[38;5;82m52\u{1b}[0m\u{1b}[38;5;126m7e\u{1b}[0m\u{1b}[38;5;14m0e\u{1b}[0m\u{1b}[38;5;40m28\u{1b}[0m\u{1b}[38;5;192mc0\u{1b}[0m\u{1b}[38;5;159m9f\u{1b}[0m\u{1b}[38;5;111m6f\u{1b}[0m\u{1b}[38;5;98m62\u{1b}[0m\u{1b}[38;5;221mdd\u{1b}[0m\u{1b}[38;5;45m2d\u{1b}[0m\u{1b}[38;5;65m41\u{1b}[0m\u{1b}[38;5;151m97\u{1b}[0m\u{1b}[38;5;213md5\u{1b}[0m\u{1b}[38;5;210md2\u{1b}[0m\u{1b}[38;5;37m25\u{1b}[0m"
+        );
+    }
+
+    #[test]
+    fn format_hash_doesnt_crash_on_non_base16_characters() {
+        use super::format_hash;
+
+        format_hash("ASDF".to_string());
+        format_hash("😄".to_string());
+    }
+
     #[test]
     fn find_bsd_tag_line_works() {
         use super::find_bsd_tag_line;
