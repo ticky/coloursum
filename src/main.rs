@@ -9,50 +9,49 @@ use ansi_term::Colour::Fixed;
 use itertools::Itertools;
 
 #[derive(Debug)]
-enum LineKind {
-    BSD { suffix_start: usize },
-    SumPrefixed { prefix_end: usize },
-}
-
-#[derive(Debug)]
 struct Line {
     contents: String,
-    kind: Option<LineKind>,
+    formattable_start: Option<usize>,
+    formattable_end: Option<usize>,
 }
 
 impl From<String> for Line {
     fn from(contents: String) -> Self {
-        let mut kind: Option<LineKind> = None;
+        let mut formattable_start: Option<usize> = None;
+        let mut formattable_end: Option<usize> = None;
 
         if let Some(suffix_start) = find_bsd_tag_line(&contents) {
-            kind = Some(LineKind::BSD { suffix_start });
+            formattable_start = Some(suffix_start);
         } else if let Some(prefix_end) = find_sum_prefixed_line(&contents) {
-            kind = Some(LineKind::SumPrefixed { prefix_end });
+            formattable_end = Some(prefix_end);
         }
 
-        Self { contents, kind }
+        Self {
+            contents,
+            formattable_start,
+            formattable_end,
+        }
     }
 }
 
 impl Display for Line {
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         // Fall back to writing with no extra formatting
-        // if we didn't detect any particular kind of input
-        let line_kind = match &self.kind {
-            None => return write!(formatter, "{}", self.contents),
-            Some(kind) => kind,
-        };
-
-        match line_kind {
-            LineKind::BSD { suffix_start } => {
-                let (prefix, suffix) = self.contents.split_at(*suffix_start);
-                write!(formatter, "{}{}", prefix, format_hash(suffix.to_string()))
-            }
-            LineKind::SumPrefixed { prefix_end } => {
-                let (prefix, suffix) = self.contents.split_at(*prefix_end);
-                write!(formatter, "{}{}", format_hash(prefix.to_string()), suffix)
-            }
+        // if we didn't detect a hash at any position
+        if self.formattable_start.is_none() && self.formattable_end.is_none() {
+            return write!(formatter, "{}", self.contents);
         }
+
+        let formattable_start = self.formattable_start.unwrap_or(0);
+        let formattable_end = self.formattable_end.unwrap_or_else(|| self.contents.len());
+
+        write!(
+            formatter,
+            "{}{}{}",
+            self.contents[..formattable_start].to_string(),
+            format_hash(self.contents[formattable_start..formattable_end].to_string()),
+            self.contents[formattable_end..].to_string(),
+        )
     }
 }
 
