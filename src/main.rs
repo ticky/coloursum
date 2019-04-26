@@ -3,17 +3,18 @@ use std::str::FromStr;
 use structopt::StructOpt;
 
 use coloursum::coloursum;
-use coloursum::{ANSIColouredLine, OnePasswordLine};
+use coloursum::{ANSIColouredLine, EcojiLine, OnePasswordLine};
 
 #[derive(PartialEq, Debug)]
 enum FormattingMode {
     ANSIColours,
+    Ecoji,
     OnePassword,
 }
 
 impl FormattingMode {
-    fn variants() -> [&'static str; 2] {
-        ["ansi-colours", "1password"]
+    fn variants() -> [&'static str; 3] {
+        ["ansi-colours", "ecoji", "1password"]
     }
 }
 
@@ -23,6 +24,7 @@ impl FromStr for FormattingMode {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "ansi-colours" => Ok(FormattingMode::ANSIColours),
+            "ecoji" => Ok(FormattingMode::Ecoji),
             "1password" => Ok(FormattingMode::OnePassword),
             _ => Err("Unexpected formatting mode type".to_string()),
         }
@@ -55,6 +57,7 @@ fn main() -> io::Result<()> {
         FormattingMode::ANSIColours => {
             coloursum::<ANSIColouredLine, _, _>(locked_stdin, locked_stdout)
         }
+        FormattingMode::Ecoji => coloursum::<EcojiLine, _, _>(locked_stdin, locked_stdout),
         FormattingMode::OnePassword => {
             coloursum::<OnePasswordLine, _, _>(locked_stdin, locked_stdout)
         }

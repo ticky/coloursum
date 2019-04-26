@@ -7,6 +7,9 @@ pub use base_line::{FormattableLine, Line};
 mod ansi_coloured_line;
 pub use ansi_coloured_line::ANSIColouredLine;
 
+mod ecoji_line;
+pub use ecoji_line::EcojiLine;
+
 mod onepassword_line;
 pub use onepassword_line::OnePasswordLine;
 
