@@ -23,3 +23,5 @@ cargo install coloursum
 ```bash
 md5sum [file] | coloursum
 ```
+
+Coloursum also prints full usage information if you run `coloursum --help`.
