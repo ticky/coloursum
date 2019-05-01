@@ -2,8 +2,7 @@ use std::io;
 use std::str::FromStr;
 use structopt::StructOpt;
 
-use coloursum::coloursum;
-use coloursum::{ANSIColouredLine, EcojiLine, OnePasswordLine};
+use coloursum::{ANSIColouredLine, EcojiLine, Line, OnePasswordLine};
 
 #[derive(PartialEq, Debug)]
 enum FormattingMode {
@@ -54,12 +53,8 @@ fn main() -> io::Result<()> {
     let locked_stdout = stdout.lock();
 
     match options.mode {
-        FormattingMode::ANSIColours => {
-            coloursum::<ANSIColouredLine, _, _>(locked_stdin, locked_stdout)
-        }
-        FormattingMode::Ecoji => coloursum::<EcojiLine, _, _>(locked_stdin, locked_stdout),
-        FormattingMode::OnePassword => {
-            coloursum::<OnePasswordLine, _, _>(locked_stdin, locked_stdout)
-        }
+        FormattingMode::ANSIColours => ANSIColouredLine::coloursum(locked_stdin, locked_stdout),
+        FormattingMode::Ecoji => EcojiLine::coloursum(locked_stdin, locked_stdout),
+        FormattingMode::OnePassword => OnePasswordLine::coloursum(locked_stdin, locked_stdout),
     }
 }

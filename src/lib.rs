@@ -4,6 +4,8 @@
 //! a line of various checksum generators' output, in order to colourise or
 //! otherwise transform their checksum in order to improve readability.
 //!
+//! ## Formatting one line with the `Line` trait
+//!
 //! Types implementing `Line` understand both the BSD "tag" form, as well as
 //! the GNU Coreutils/Perl `shasum(1)` form of checksums, and have been tested
 //! with the output from macOS' `md5`, `shasum`, as well as GNU `md5sum`
@@ -32,12 +34,38 @@
 //! );
 //! ```
 //!
-//! The provided `coloursum` function is able to be used with any type which
-//! implements `Line`, consumes a `BufRead` input buffer, and writes formatted
-//! lines to a `Write` output buffer.
-
-use std::io;
-use std::io::{BufRead, Write};
+//! ## Formatting a buffer of lines with the `coloursum` function
+//!
+//! The `Line` trait implements a `coloursum` function.
+//! This consumes a `BufRead` input buffer, and writes formatted lines to a
+//! `Write` output buffer.
+//!
+//! ```rust
+//! use std::io::BufReader;
+//!
+//! use coloursum::{Line, EcojiLine};
+//! use indoc::indoc;
+//!
+//! // Note that each line will have its format detected separately, so
+//! // BSD and GNU form lines can be in the same buffer
+//! let input = indoc!("
+//!     MD5 (./src/ecoji_line.rs) = 841d462b66e1f4bb839a1b72ab3f3668
+//!     841d462b66e1f4bb839a1b72ab3f3668  ./src/ecoji_line.rs
+//! ").as_bytes();
+//!
+//! let input_buffer = BufReader::new(input);
+//! let mut output_buffer: Vec<u8> = Vec::new();
+//!
+//! EcojiLine::coloursum(input_buffer, &mut output_buffer);
+//!
+//! assert_eq!(
+//!     std::str::from_utf8(&output_buffer).unwrap(),
+//!     indoc!("
+//!         MD5 (./src/ecoji_line.rs) = 📢💥👛🤓🤴🛌😫🥊🌵🚦😚🚲👱☕☕☕
+//!         📢💥👛🤓🤴🛌😫🥊🌵🚦😚🚲👱☕☕☕  ./src/ecoji_line.rs
+//!     ")
+//! );
+//! ```
 
 mod base_line;
 pub use base_line::{FormattableLine, Line};
@@ -50,15 +78,3 @@ pub use ecoji_line::EcojiLine;
 
 mod onepassword_line;
 pub use onepassword_line::OnePasswordLine;
-
-/// Takes each line in `from`, and writes it to `to`.
-///
-/// If a given line is recognisable as the output of a
-/// hashing utility, its hash value will be coloured.
-pub fn coloursum<F: Line, I: BufRead, O: Write>(from: I, mut to: O) -> io::Result<()> {
-    for wrapped_line in from.lines() {
-        writeln!(to, "{}", F::from(wrapped_line?))?
-    }
-
-    Ok(())
-}

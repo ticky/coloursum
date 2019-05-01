@@ -1,6 +1,8 @@
 use std::convert::From;
 use std::fmt;
 use std::fmt::Display;
+use std::io;
+use std::io::{BufRead, Write};
 
 #[derive(Debug)]
 /// Representation of the formattable contents of a line of console output.
@@ -35,8 +37,20 @@ pub trait Line: Display + From<String> {
     /// Formats the given checksum string.
     fn format_hash(hash: String) -> String;
 
-    /// Retrieves the underlying [`FormattableLine`] object.
+    /// Retrieves the underlying `FormattableLine` object.
     fn get_line(&self) -> &FormattableLine;
+
+    /// Takes each line in `from`, and writes it to `to`.
+    ///
+    /// If a given line is recognisable as the output of a
+    /// hashing utility, its hash value will be coloured.
+    fn coloursum<I: BufRead, O: Write>(from: I, mut to: O) -> io::Result<()> {
+        for wrapped_line in from.lines() {
+            writeln!(to, "{}", Self::from(wrapped_line?))?
+        }
+
+        Ok(())
+    }
 
     /// Writes the processed line to the supplied `Formatter`.
     ///
