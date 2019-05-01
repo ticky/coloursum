@@ -1,6 +1,6 @@
 # ColourSum
 
-[![crates.io](https://img.shields.io/crates/v/coloursum.svg)](https://crates.io/crates/coloursum) [![Build Status](https://travis-ci.org/ticky/coloursum.svg?branch=develop)](https://travis-ci.org/ticky/coloursum)
+[![crates.io](https://img.shields.io/crates/v/coloursum.svg)](https://crates.io/crates/coloursum) [![Build Status](https://travis-ci.org/ticky/coloursum.svg?branch=develop)](https://travis-ci.org/ticky/coloursum) [![codecov](https://codecov.io/gh/ticky/coloursum/branch/develop/graph/badge.svg)](https://codecov.io/gh/ticky/coloursum)
 
 🎨 Colourise your checksum output
 
@@ -8,7 +8,7 @@
 
 This is a utility into which you can pipe the output from various checksum generators, to get coloured output.
 
-It understands both the BSD "tag" form, as well as the GNU Coreutils/Perl `shasum(1)` form of checksums, and has been tested with the output from macOS' `md5`, `shasum`, as well as GNU `md5sum`, `sha256sum`.
+It understands both the BSD "tag" form, as well as the GNU Coreutils/Perl `shasum(1)` form of checksums, and has been tested with the output from macOS' `md5` and `shasum`, as well as GNU `md5sum` and `sha256sum`.
 
 ## Installation
 
