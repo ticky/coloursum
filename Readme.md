@@ -1,6 +1,6 @@
 # ColourSum
 
-[![crates.io](https://img.shields.io/crates/v/coloursum.svg)](https://crates.io/crates/coloursum) [![Build Status](https://travis-ci.org/ticky/coloursum.svg?branch=develop)](https://travis-ci.org/ticky/coloursum)
+[![crates.io](https://img.shields.io/crates/v/coloursum.svg)](https://crates.io/crates/coloursum) [![Build Status](https://travis-ci.org/ticky/coloursum.svg?branch=develop)](https://travis-ci.org/ticky/coloursum) [![codecov](https://codecov.io/gh/ticky/coloursum/branch/develop/graph/badge.svg)](https://codecov.io/gh/ticky/coloursum)
 
 🎨 Colourise your checksum output
 
