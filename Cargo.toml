@@ -10,6 +10,7 @@ license = "MIT"
 
 [badges]
 travis-ci = { repository = "ticky/coloursum", branch = "develop" }
+codecov = { repository = "ticky/coloursum", branch = "develop" }
 
 [dependencies]
 ansi_term = "0.11.0"
