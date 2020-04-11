@@ -37,7 +37,7 @@ struct Options {
         short,
         long,
         case_insensitive = true,
-        raw(possible_values = "&FormattingMode::variants()"),
+        possible_values = &FormattingMode::variants(),
         default_value = "ansi-colours"
     )]
     mode: FormattingMode,
