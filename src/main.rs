@@ -104,6 +104,7 @@ static SUM_EXECNAMES: &[&str] = &[
     "shasum",
     "sha1sum",
     "gsha1sum",
+    "sha2",
     "sha256sum",
     "gsha256sum",
     "sha224sum",
