@@ -25,3 +25,27 @@ md5sum [file] | coloursum
 ```
 
 Coloursum also prints full usage information if you run `coloursum --help`.
+
+### Shell Integration
+
+You can also integrate coloursum into your shell, to output colourful checksums by default!
+
+By default, it will search for known checksum commands' presence, and generate shell functions for those which are found.
+
+If this behaviour is not acceptable, or your checksum command is not in the list, you can optionally specify a checksum command as the last argument to `coloursum shell-setup` to generate a shell function just for it.
+
+#### bash, zsh, and other similar shells
+
+Add this line to your ~/.bash_profile, ~/.zshrc or equivalent file:
+
+```sh
+eval "$(coloursum --mode=1password shell-setup)"
+```
+
+#### fish shell
+
+Add this line to ~/.config/fish/config.fish:
+
+```fish
+status --is-interactive; and coloursum --mode=ecoji shell-setup | source
+```
