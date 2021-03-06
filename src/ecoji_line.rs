@@ -57,6 +57,21 @@ impl Line for EcojiLine {
 #[cfg(test)]
 mod tests {
     #[test]
+    fn display_works() {
+        use super::EcojiLine;
+
+        assert_eq!(
+            format!(
+                "{}",
+                EcojiLine::from(
+                    "MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string()
+                )
+            ),
+            "MD5 (./src/main.rs) = 😨🏸🤰📺🙎📇🦎😨🍽🇮📆💣🍜☕☕☕"
+        )
+    }
+
+    #[test]
     fn format_hash_works() {
         use super::EcojiLine;
         use crate::Line;
