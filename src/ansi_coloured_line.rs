@@ -57,6 +57,16 @@ impl Line for ANSIColouredLine {
 #[cfg(test)]
 mod tests {
     #[test]
+    fn display_works() {
+        use super::ANSIColouredLine;
+
+        assert_eq!(
+            format!("{}", ANSIColouredLine::from("MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string())),
+            "MD5 (./src/main.rs) = \u{1b}[38;5;183mb7\u{1b}[0m\u{1b}[38;5;82m52\u{1b}[0m\u{1b}[38;5;126m7e\u{1b}[0m\u{1b}[38;5;14m0e\u{1b}[0m\u{1b}[38;5;40m28\u{1b}[0m\u{1b}[38;5;192mc0\u{1b}[0m\u{1b}[38;5;159m9f\u{1b}[0m\u{1b}[38;5;111m6f\u{1b}[0m\u{1b}[38;5;98m62\u{1b}[0m\u{1b}[38;5;221mdd\u{1b}[0m\u{1b}[38;5;45m2d\u{1b}[0m\u{1b}[38;5;65m41\u{1b}[0m\u{1b}[38;5;151m97\u{1b}[0m\u{1b}[38;5;213md5\u{1b}[0m\u{1b}[38;5;210md2\u{1b}[0m\u{1b}[38;5;37m25\u{1b}[0m"
+        )
+    }
+
+    #[test]
     fn format_hash_works() {
         use super::ANSIColouredLine;
         use crate::Line;
