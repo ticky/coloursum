@@ -46,6 +46,16 @@ impl Line for OnePasswordLine {
 #[cfg(test)]
 mod tests {
     #[test]
+    fn display_works() {
+        use super::OnePasswordLine;
+
+        assert_eq!(
+            format!("{}", OnePasswordLine::from("MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string())),
+            "MD5 (./src/main.rs) = b\u{1b}[38;5;4m7\u{1b}[0m\u{1b}[38;5;4m5\u{1b}[0m\u{1b}[38;5;4m2\u{1b}[0m\u{1b}[38;5;4m7\u{1b}[0me\u{1b}[38;5;4m0\u{1b}[0me\u{1b}[38;5;4m2\u{1b}[0m\u{1b}[38;5;4m8\u{1b}[0mc\u{1b}[38;5;4m0\u{1b}[0m\u{1b}[38;5;4m9\u{1b}[0mf\u{1b}[38;5;4m6\u{1b}[0mf\u{1b}[38;5;4m6\u{1b}[0m\u{1b}[38;5;4m2\u{1b}[0mdd\u{1b}[38;5;4m2\u{1b}[0md\u{1b}[38;5;4m4\u{1b}[0m\u{1b}[38;5;4m1\u{1b}[0m\u{1b}[38;5;4m9\u{1b}[0m\u{1b}[38;5;4m7\u{1b}[0md\u{1b}[38;5;4m5\u{1b}[0md\u{1b}[38;5;4m2\u{1b}[0m\u{1b}[38;5;4m2\u{1b}[0m\u{1b}[38;5;4m5\u{1b}[0m"
+        )
+    }
+
+    #[test]
     fn format_hash_works() {
         use super::OnePasswordLine;
         use crate::Line;

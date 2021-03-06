@@ -93,6 +93,18 @@ fn find_sum_prefixed_line(line: &str) -> Option<usize> {
 #[cfg(test)]
 mod tests {
     #[test]
+    fn from_string_works() {
+        use super::FormattableLine;
+
+        let string = "MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string();
+        let line = FormattableLine::from(string.clone());
+
+        assert_eq!(line.contents, string);
+        assert_eq!(line.formattable_start, Some(22));
+        assert_eq!(line.formattable_end, None);
+    }
+
+    #[test]
     fn find_bsd_tag_line_works() {
         use super::find_bsd_tag_line;
 
