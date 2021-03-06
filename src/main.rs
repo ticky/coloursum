@@ -161,20 +161,35 @@ fn get_shell_name() -> Option<String> {
 
 #[cfg(unix)]
 fn print_shell_function(options: &MainOptions, shell_name: &str, command: String) {
+    // TODO: work out how to print this losslessly
+    let exe_name = match std::env::current_exe() {
+        Ok(path) => path.to_string_lossy().into_owned(),
+        Err(_) => "coloursum".to_string(),
+    };
+
     match shell_name {
         "fish" => println!(
-            "function {0}\n    command {0} $argv | coloursum --mode {1}\nend",
+            "function {0}\n\
+            \tcommand {0} $argv | {1} --mode {2}\n\
+            end",
             command,
+            exe_name,
             options.mode.to_string()
         ),
         "ksh" => println!(
-            "function {0} {{\n    command {0} \"$@\" | coloursum --mode {1}\n}}",
+            "function {0} {{\n\
+            \tcommand {0} \"$@\" | {1} --mode {2}\n\
+            }}",
             command,
+            exe_name,
             options.mode.to_string()
         ),
         _ => println!(
-            "function {0}() {{\n    command {0} \"$@\" | coloursum --mode {1}\n}}",
+            "function {0}() {{\n\
+            \tcommand {0} \"$@\" | {1} --mode {2}\n\
+            }}",
             command,
+            exe_name,
             options.mode.to_string()
         ),
     }
