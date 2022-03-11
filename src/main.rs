@@ -1,6 +1,6 @@
+use clap::Parser;
 use std::io;
 use std::str::FromStr;
-use clap::Parser;
 
 use coloursum::{ANSIColouredLine, EcojiLine, Line, OnePasswordLine};
 
