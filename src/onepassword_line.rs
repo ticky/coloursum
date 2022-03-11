@@ -17,8 +17,8 @@ impl From<String> for OnePasswordLine {
 }
 
 impl Display for OnePasswordLine {
-    fn fmt(&self, mut formatter: &mut fmt::Formatter) -> fmt::Result {
-        self.to_formatted(&mut formatter)
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        self.to_formatted(formatter)
     }
 }
 

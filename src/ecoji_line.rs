@@ -3,7 +3,6 @@ use std::fmt;
 use std::fmt::Display;
 use std::iter::FromIterator;
 
-use ecoji;
 use itertools::Itertools;
 
 use crate::base_line::{FormattableLine, Line};
@@ -18,8 +17,8 @@ impl From<String> for EcojiLine {
 }
 
 impl Display for EcojiLine {
-    fn fmt(&self, mut formatter: &mut fmt::Formatter) -> fmt::Result {
-        self.to_formatted(&mut formatter)
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        self.to_formatted(formatter)
     }
 }
 
@@ -50,7 +49,7 @@ impl Line for EcojiLine {
             // if there was an error at any point, return the original value
             Err(_) => hash,
             // otherwise, encode with ecoji
-            Ok(bytes) => ecoji::encode_to_string(&mut &*bytes).unwrap_or_else(|_| hash),
+            Ok(bytes) => ecoji::encode_to_string(&mut &*bytes).unwrap_or(hash),
         }
     }
 }

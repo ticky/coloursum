@@ -18,8 +18,8 @@ impl From<String> for ANSIColouredLine {
 }
 
 impl Display for ANSIColouredLine {
-    fn fmt(&self, mut formatter: &mut fmt::Formatter) -> fmt::Result {
-        self.to_formatted(&mut formatter)
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        self.to_formatted(formatter)
     }
 }
 

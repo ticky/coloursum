@@ -65,14 +65,14 @@ pub trait Line: Display + From<String> {
         }
 
         let slice_start = line.formattable_start.unwrap_or(0);
-        let slice_end = line.formattable_end.unwrap_or_else(|| line.contents.len());
+        let slice_end = line.formattable_end.unwrap_or(line.contents.len());
 
         write!(
             formatter,
             "{}{}{}",
-            line.contents[..slice_start].to_string(),
+            &line.contents[..slice_start],
             Self::format_hash(line.contents[slice_start..slice_end].to_string()),
-            line.contents[slice_end..].to_string(),
+            &line.contents[slice_end..],
         )
     }
 }
@@ -97,19 +97,16 @@ mod tests {
         use super::find_bsd_tag_line;
 
         assert_eq!(
-            find_bsd_tag_line(
-                &"MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string()
-            ),
+            find_bsd_tag_line("MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225"),
             Some(22)
         );
         assert_eq!(
-            find_bsd_tag_line(&"b7527e0e28c09f6f62dd2d4197d5d225  ./src/main.rs".to_string()),
+            find_bsd_tag_line("b7527e0e28c09f6f62dd2d4197d5d225  ./src/main.rs"),
             None
         );
         assert_eq!(
             find_bsd_tag_line(
-                &"3e08ba70bfc57da75612af458c7ea94108f9a9ddf9d1bfd96de9c0e34e684bda  ./src/main.rs"
-                    .to_string()
+                "3e08ba70bfc57da75612af458c7ea94108f9a9ddf9d1bfd96de9c0e34e684bda  ./src/main.rs"
             ),
             None
         );
@@ -120,20 +117,17 @@ mod tests {
         use super::find_sum_prefixed_line;
 
         assert_eq!(
-            find_sum_prefixed_line(&"b7527e0e28c09f6f62dd2d4197d5d225  ./src/main.rs".to_string()),
+            find_sum_prefixed_line("b7527e0e28c09f6f62dd2d4197d5d225  ./src/main.rs"),
             Some(32)
         );
         assert_eq!(
             find_sum_prefixed_line(
-                &"3e08ba70bfc57da75612af458c7ea94108f9a9ddf9d1bfd96de9c0e34e684bda  ./src/main.rs"
-                    .to_string()
+                "3e08ba70bfc57da75612af458c7ea94108f9a9ddf9d1bfd96de9c0e34e684bda  ./src/main.rs"
             ),
             Some(64)
         );
         assert_eq!(
-            find_sum_prefixed_line(
-                &"MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225".to_string()
-            ),
+            find_sum_prefixed_line("MD5 (./src/main.rs) = b7527e0e28c09f6f62dd2d4197d5d225"),
             None
         );
     }
