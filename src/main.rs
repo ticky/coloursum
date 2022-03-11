@@ -1,6 +1,6 @@
 use std::io;
 use std::str::FromStr;
-use structopt::StructOpt;
+use clap::Parser;
 
 use coloursum::{ANSIColouredLine, EcojiLine, Line, OnePasswordLine};
 
@@ -30,21 +30,22 @@ impl FromStr for FormattingMode {
     }
 }
 
-#[derive(StructOpt, Debug)]
+#[derive(Parser, Debug)]
+#[clap(version)]
 struct Options {
     /// What sort of formatting to use for checksum values.
-    #[structopt(
+    #[clap(
         short,
         long,
-        case_insensitive = true,
-        raw(possible_values = "&FormattingMode::variants()"),
+        ignore_case = true,
+        possible_values = FormattingMode::variants(),
         default_value = "ansi-colours"
     )]
     mode: FormattingMode,
 }
 
 fn main() -> io::Result<()> {
-    let options = Options::from_args();
+    let options = Options::parse();
 
     let stdin = io::stdin();
     let locked_stdin = stdin.lock();
