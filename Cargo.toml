@@ -14,7 +14,7 @@ codecov = { repository = "ticky/coloursum", branch = "develop" }
 
 [dependencies]
 ansi_term = "0.12.1"
-clap = { version = "3.0", features = ["derive"] }
+clap = { version = "4.1", features = ["derive"] }
 ecoji = "1.0.0"
 itertools = "0.10.5"
 
