@@ -130,11 +130,11 @@ fn shell_setup(
     println!("# coloursum: generated setup for `{}`", shell_name);
 
     if let Some(command) = &shell_setup_options.command {
-        print_shell_function(&options, shell_name.as_ref(), command.to_string());
+        print_shell_function(options, shell_name.as_ref(), command.to_string());
     } else {
         for executable in SUM_EXECNAMES {
             if let Ok(_path) = which::which(executable) {
-                print_shell_function(&options, shell_name.as_ref(), (*executable).to_string())
+                print_shell_function(options, shell_name.as_ref(), (*executable).to_string())
             }
         }
     }
