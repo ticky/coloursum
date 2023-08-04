@@ -1,33 +1,14 @@
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use std::io;
-use std::str::FromStr;
 
 use coloursum::{ANSIColouredLine, EcojiLine, Line, OnePasswordLine};
 
-#[derive(PartialEq, Debug)]
+#[derive(Clone, PartialEq, Debug, ValueEnum)]
 enum FormattingMode {
     ANSIColours,
     Ecoji,
+    #[value(name = "1password")]
     OnePassword,
-}
-
-impl FormattingMode {
-    fn variants() -> [&'static str; 3] {
-        ["ansi-colours", "ecoji", "1password"]
-    }
-}
-
-impl FromStr for FormattingMode {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "ansi-colours" => Ok(FormattingMode::ANSIColours),
-            "ecoji" => Ok(FormattingMode::Ecoji),
-            "1password" => Ok(FormattingMode::OnePassword),
-            _ => Err("Unexpected formatting mode type".to_string()),
-        }
-    }
 }
 
 #[derive(Parser, Debug)]
@@ -38,7 +19,7 @@ struct Options {
         short,
         long,
         ignore_case = true,
-        possible_values = FormattingMode::variants(),
+        value_enum,
         default_value = "ansi-colours"
     )]
     mode: FormattingMode,
