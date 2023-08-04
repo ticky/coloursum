@@ -8,10 +8,6 @@ repository = "https://github.com/ticky/coloursum"
 readme = "Readme.md"
 license = "MIT"
 
-[badges]
-travis-ci = { repository = "ticky/coloursum", branch = "develop" }
-codecov = { repository = "ticky/coloursum", branch = "develop" }
-
 [dependencies]
 ansi_term = "0.12.1"
 clap = { version = "4.0", features = ["derive"] }
