@@ -16,7 +16,7 @@ itertools = "0.10.5"
 
 [target.'cfg(unix)'.dependencies]
 sysinfo = "0.13.1"
-which = { version = "3.1.1", default-features = false }
+which = { version = "4.0.2", default-features = false }
 
 [dev-dependencies]
 indoc = "2.0.3"
